@@ -1,0 +1,88 @@
+.btn {
+  
+  &.btn-link {
+    color: $brand-primary-muted;
+
+    &:hover {
+      color: $brand-primary;
+      text-decoration: none;
+    }
+
+    &:focus {
+      text-decoration: none;
+    }
+
+    &.active {
+      background: none;
+      box-shadow: none;
+      color: $brand-primary;
+    }
+
+    &.inverse {
+      color: $gray;
+      padding-right: 0;
+      padding-top: 5px;
+
+      &:hover,
+      &.active {
+        color: #fff;
+      }
+    }
+  }
+
+  &.btn-merged {
+    background-color: #fff;
+    border: 1px solid;
+    color: $brand-merged;
+    opacity: 1;
+  }
+
+  &.btn-success {
+    background-color: $brand-success;
+
+    &:hover {
+      background-color: darken($brand-success, 5%);
+    }
+  }
+
+  &.btn-simple {
+    background-color: #fff;
+    border-color: #ececec;
+    color: $brand-warning;
+
+    &:hover {
+      color: $brand-warning;
+      cursor: default;
+    }
+
+    &:active,
+    &:focus {
+      box-shadow: none;
+      outline: none;
+    }
+  }
+
+  &.btn-ninja {
+    background-color: #fff;
+    border: 1px solid $gray-light;
+    color: $brand-primary-muted;
+    height: 40px;
+    width: 50px;
+
+    &:hover {
+      background-color: $gray-lighter;
+
+      .icon-ninja-star.muted {
+        color: $brand-primary;
+      }
+    }
+
+    &.btn-threshold-reached {
+      color: $brand-primary;
+    }
+
+    &.btn-threshold-missing {
+      color: $brand-warning;
+    }
+  }
+}

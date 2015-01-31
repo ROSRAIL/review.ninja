@@ -1,0 +1,132 @@
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+
+    <div class="row">
+      <div class="col-md-12">
+
+        <ol class="breadcrumb">
+          <li><a ui-sref="repo.master()">{{ repo.value.owner.login }} / {{ repo.value.name }}</a></li>
+          <li class="pull-right settings-icon"><a ui-sref="repo.settings()"><span class="octicon octicon-gear"></span></a></li>
+          <li class="pull-right" style="margin-top:-2px;"><a href="" ng-click="badge()"><img src="/assets/images/wereviewninja-24.png" /></a></li>
+        </ol>
+
+        <h2><span class="mega-octicon octicon-git-pull-request"></span> Pull Requests</h2>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+
+        <div class="well well-sm no-select">
+          <a href="" class="btn btn-link" ng-click="type='open'; author=null;" ng-class="{active: type==='open'}">
+            <span class="octicon octicon-issue-opened"></span> Open
+          </a>
+          <a href="" class="btn btn-link" ng-click="type='closed'; author=null;" ng-class="{active: type==='closed'}">
+            <span class="octicon octicon-issue-closed"></span> Closed
+          </a>
+          <div class="btn-group pull-right">
+            <a href="" class="btn btn-link dropdown-toggle author" ng-class="{active: author}" data-toggle="dropdown">
+              Author <small><i class="fa fa-chevron-down"></i></small>
+            </a>
+            <ul class="dropdown-menu" role="menu" ng-show="authors" style="margin:-5px 10px 0 0">
+              <li ng-repeat="(key, val) in authors" ng-show="val[type]">
+                <a href="" ng-click="$parent.author = author!==key ? key : null">
+                  <span ng-show="key !== author">{{ key }}</span>
+                  <strong ng-show="key === author">{{ key }}</strong>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <table class="table table-hover pull-list"
+               infinite-scroll="type==='open' ? open.getMore() : closed.getMore()"
+               infinite-scroll-disabled="type==='open' ? !(!open.loading && !author) : !(!closed.loading && !author)"
+               ng-show="matched.length"
+               style="margin-bottom:10px;">
+
+          <tr ng-repeat="pull in (matched = ((type==='open' ? open.value : closed.value) | deep:'user.login':author))"
+              ui-sref="repo.pull.issue.master({ number: pull.number })"
+              class="select">
+            <td class="watched" ng-class="{active: pull.watched}"></td>
+            <td style="width:50px; padding-right:0;">
+              <img ng-src="{{ pull.user.avatar_url }}&s=50" width="50px" />
+            </td>
+            <td>
+              <strong>{{ pull.title }}</strong> #{{ pull.number }}<br />
+              <small ng-show="pull.state==='open'">
+                opened <span moment="pull.created_at"></span> by {{ pull.user.login }}
+              </small>
+              <small ng-show="pull.state==='closed'">
+                {{ pull.merged_at ? 'merged' : 'closed' }} <span moment="pull.merged_at || pull.closed_at"></span>,
+              </small>
+            </td>
+            <td>
+              <table class="git-merge text-primary">
+                <tr>
+                  <td><small>{{ pull.head.repo.id === pull.base.repo.id ? pull.base.ref : pull.base.label}}</small></td>
+                  <td rowspan="2"><span class="mega-octicon octicon-git-pull-request octicon-rotate" style="margin-top:5px;"></span></td>
+                </tr>
+                <tr>
+                  <td><small>{{ pull.head.repo.id === pull.base.repo.id ? pull.head.ref : pull.head.label }}</small></td>
+                </tr>
+              </table>
+            </td>
+
+            <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
+              <span class="text-primary" ng-class="{muted: !pull.commentsCount}">
+                <span class="octicon octicon-large octicon-comment-discussion"></span><br />
+                {{ pull.commentsCount }}
+              </span>
+            </td>
+            <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px"
+                ng-show="pull.milestone.open_issues">
+              <span class="text-warning">
+                <span class="octicon octicon-large octicon-issue-opened"></span><br />
+                {{ pull.milestone.open_issues }}
+              </span>
+            </td>
+            <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px"
+                 ng-show="!pull.milestone.open_issues">
+              <span class="text-primary" ng-class="{muted: !pull.milestone.closed_issues}">
+                <span class="octicon octicon-large octicon-issue-closed"></span><br />
+                {{ pull.milestone.closed_issues || 0 }}
+              </span>
+            </td>
+            <td class="text-center" style="width:50px; padding-left:10px; padding-right:10px">
+              <span class="text-primary" ng-class="{muted: !pull.stars.length}">
+                <span class="fa-lg icon-ninja-star"
+                    tooltip="{{ getStarUsers(pull) }}"
+                    tooltip-placement="bottom"
+                    tooltip-append-to-body="true"></span><br />
+                {{ pull.stars.length }}
+              </span>
+            </td>
+          </tr>
+        </table>
+
+        <p class="well text-center" ng-show="type==='open' && !open.loading && !matched.length">
+          There are no open pull requests to show.
+        </p>
+
+        <p class="well text-center" ng-show="type==='closed' && !closed.loading && !matched.length">
+          There are no closed pull requests to show.
+        </p>
+
+        <span class="fa-stack center-block"
+              ng-show="author"
+              ng-click="author=null;">
+          <i class="fa fa-circle fa-stack-2x text-info"></i>
+          <i class="fa fa-times fa-stack-1x" style="margin-top:-1px;" tooltip="Clear filters" tooltip-placement="bottom" tooltip-append-to-body="true"></i>
+        </span>
+
+        <i class="fa fa-2x fa-spinner fa-spin center-block"
+           ng-show="(type==='open' && open.loading) || (type==='closed' && closed.loading)">
+        </i>
+
+      </div>
+    </div>
+
+  </div>
+</div>

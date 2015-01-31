@@ -1,0 +1,41 @@
+{
+  "name": "ReviewNinja",
+  "website": "http://review.ninja/",
+  "description": "ReviewNinja - merge with confidence. A code review tool that integrates into GitHub.",
+  "keywords": [
+    "code review",
+    "github"
+  ],
+  "repository": "https://github.com/reviewninja/review.ninja",
+  "logo": "https://raw.githubusercontent.com/reviewninja/review.ninja/master/src/client/assets/images/review-ninja-250.png",
+  "success_url": "/",
+  "env": {
+    "HOST": {
+      "description": "Change this to the hostname you expect the application to have. If you want to use the one heroku provides you, you need to deploy and then change it in the applicaton settings. If you provided an App Name, then it will be appname.herokuapp.com (be aware, this should not include http:// only appname.herokuapp.com",
+      "value": "review.ninja"
+    },
+    "PROTOCOL": {
+      "description": "We need this to build links in emails and other external resources.",
+      "value": "http"
+    },
+    "SESSION_SECRET": {
+      "description": "A secret key for verifying the integrity of signed cookies.",
+      "generator": "secret"
+    },
+    "GITHUB_CLIENT": {
+      "description": "Client ID of your GitHub Application. Tip: you will need to register you application with the callback url <PROTOCOLL>://<HOST>/auth/github/callback. As stated in the HOST parameter already, if you don't know the url yet then deploy and update the GitHub application once you do know."
+    },
+    "GITHUB_SECRET": {
+      "description": "Client Secret of your GitHub Application."
+    },
+    "GITHUB_USER": {
+      "description": "For ReviewNinja to comment on pull requests, it needs a user to login to."
+    },
+    "GITHUB_PASS": {
+      "description": "Create an API Key in your user settings. https://github.com/settings/tokens/new Only public_repo is necessary."
+    }
+  },
+  "addons": [
+    "mongolab:sandbox"
+  ]
+}

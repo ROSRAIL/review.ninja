@@ -1,0 +1,93 @@
+<table class="table" style="table-layout:fixed; margin-bottom:0px;">
+    <tr class="no-select">
+        <td style="padding-right:0px; width:35px;">
+            <a class="text-primary" ui-sref="repo.pull.issue.master()"><i class="fa fa-lg fa-angle-left"></i></a>
+        </td>
+        <td>
+            <h4 class="panel-title">
+                <strong>{{ issue.title }}</strong> 
+                <a class="link-external" target="_blank"  ng-href="{{ issue.html_url }}">#{{ issue.number }}</a>
+            </h4>
+            <p style="padding-top:15px">{{ issue.user.login }} opened this issue <span moment="issue.created_at"></span></p>
+            <i class="fa fa-lg fa-link text-warning" 
+               ng-show="issue.ref"
+               style="padding-top:10px;">
+            </i>
+            <span ng-show="issue.ref"> This issue is linked to {{ issue.ref }}</span>
+        </td>
+        <td class="text-center" ng-class="{true: 'text-primary', false: 'text-gray'}[!!issue.body || !!issue.comments || !!comments.value.length]" style="width:50px; padding-left:0;">
+            <i class="octicon octicon-comment"></i>
+            {{ (issue.body ? 1 : 0) + (comments.value.length || issue.comments) }}
+        </td>
+    </tr>
+</table>
+
+<div infinite-scroll="comments.getMore()" 
+     infinite-scroll-disabled="comments.loading"
+     style="padding:20px 10px; margin-bottom:20px;">
+
+    <table style="width:100%" ng-show="issue.html">
+        <tr>
+            <td style="width:42px; padding-right:10px; vertical-align:top;">
+                <img ng-src="{{ issue.user.avatar_url }}&s=42" width="42px" />
+            </td>
+            <td>
+                <div class="panel panel-default comment">
+                    <div class="panel-heading">
+                        <strong>{{ issue.user.login }}</strong> commented <span moment="issue.created_at"></span>
+                    </div>
+                    <div class="panel-body" ng-bind-html="issue.html"></div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table style="width:100%">
+        <tr ng-repeat="comment in comments.value" ng-show="comment.html">
+            <td style="width:42px; padding-right:10px; vertical-align:top;">
+                <img ng-src="{{ comment.user.avatar_url }}&s=42" width="42px" />
+            </td>
+            <td>
+                <div class="panel panel-default comment">
+                    <div class="panel-heading">
+                        <strong>{{ comment.user.login }}</strong> commented <span moment="comment.created_at"></span>
+                    </div>
+                    <div class="panel-body" ng-bind-html="comment.html"></div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="comments.loading"></i>
+
+    <form role="form" ng-submit="addComment()">
+        <table style="width:100%" ng-show="!comments.loading && !comments.hasMore">
+            <tr>
+                <td style="width:42px; padding-right:10px; vertical-align:top;">
+                    <img ng-src="{{ user.value.avatar_url }}&s=42" width="42px" />
+                </td>
+                <td>
+                    <div class="panel panel-default comment">
+                        <div class="panel-heading">
+                            <strong>{{ user.value.login }}</strong>
+                        </div>
+                        <div class="panel-body" style="padding:0;">
+                            <textarea class="form-control" ng-model="comment" rows="4" placeholder="Leave an issue comment"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="pull-right">
+                        <i class="fa fa-lg fa-spinner fa-spin" ng-show="set.loading || commenting.loading" style="margin-right:10px;"></i>
+                        <button type="button" class="btn btn-info" ng-click="setState()" ng-disabled="set.loading">
+                            {{ statustext() }}
+                        </button>
+                        <button type="submit" class="btn btn-primary"  ng-disabled="!comment">Comment</button>
+                    </div>
+                    <div style="clear:both;"></div>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</div>
+

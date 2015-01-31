@@ -1,0 +1,8 @@
+.plus-icon {
+  color: $brand-primary;
+
+  &.fa-plus-circle:hover,
+  &.fa-stack:hover .fa-circle {
+    color: $brand-primary-hover;
+  }
+}

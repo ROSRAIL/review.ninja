@@ -1,0 +1,95 @@
+<div class="row">
+  <div class="settings col-md-8 col-md-offset-2">
+    <div class="row">
+      <div class="col-md-12">
+
+        <ol class="breadcrumb">
+          <li><a ui-sref="repo.master()">{{ repo.value.owner.login }} / {{ repo.value.name }}</a></li>
+        </ol>
+
+        <h2 style="margin-bottom:20px;"><span class="mega-octicon octicon-gear"></span> Settings</h2>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12" style="margin-top: 10px;">
+        <p class="settingsheading">Merge threshold</p>
+        <div style="margin-left: 15px;">
+          <form name="form">
+            <p>For <strong>{{ repo.value.owner.login }}/{{ repo.value.name }}</strong>
+              <input id="threshold" type="number" min="0" max="99" required name="thresholdvalue"
+                     ng-model="reposettings.value.threshold"
+                     ng-change="changeThreshold()"
+                     ng-pattern="/[0-9]+/"
+                     ng-class="{'text-warning': form.$invalid}"
+                     class="text-right" /> ninja stars are required to merge.
+               <small class="text-danger" ng-show="form.$invalid && reposettings.loaded"><br />Threshold must be between 0 and 99.</small>
+            </p>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-12" style="margin-top: 20px;">
+        <p class="settingsheading">ReviewNinja content in GitHub</p>
+        <div style="margin-left: 15px;">
+          <div>
+            <input id="comments" type="checkbox" ng-model="reposettings.value.comment" ng-change="toggleComments()" />
+            <label for="comments">Allow ReviewNinja to comment in <strong>{{ repo.value.owner.login }}/{{ repo.value.name }}</strong> pull request conversations in GitHub.</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12" style="margin-top: 20px;">
+        <p class="settingsheading">Notifications
+          <a target="_blank" href="http://docs.review.ninja/quickstart/#configuration">
+            <span class="fa-stack">
+              <i class="fa fa-circle fa-lg fa-stack-1x text-info"></i>
+              <i class="fa fa-info fa-stack-1x text-primary" style="font-size: 12px;"></i>
+            </span>
+          </a>
+        </p>
+        <div style="margin-left: 15px;">
+          <p>ReviewNinja notifications are separate from GitHub notifications.</p>
+          <div>
+            <input id="pull" type="checkbox"
+                   ng-model="settings.value.notifications.pull_request"
+                   ng-change="setNotifications()" />
+            <label for="pull">Receive emails when a pull request is opened or updated</label>
+          </div>
+          <div>
+            <input id="issue" type="checkbox"
+                   ng-model="settings.value.notifications.issue"
+                   ng-change="setNotifications()"/>
+            <label for="issue">Receive emails when issues are opened or closed</label>
+          </div>
+          <div>
+            <input id="star" type="checkbox"
+                   ng-model="settings.value.notifications.star"
+                   ng-change="setNotifications()"/>
+            <label for="star">Receive emails when a ninja star is given or removed</label>
+          </div>
+          <div style="margin-top: 15px">
+            <p><em>Optional:</em> Filter emails by branch:</p>
+            <form style="margin-top: 10px; margin-bottom: 10px" ng-submit="addWatch()">
+              <div class="input-group" style="width:300px">
+                <div class="form-group has-feedback">
+                  <input type="text" ng-model="newWatch" value="E.g., feature/*" class="form-control" style="height:33px; width:400px" />
+                </div>
+                <span class="input-group-btn">
+                  <button class="btn btn-info" type="submit" ng-disabled="!newWatch">Add</button>
+                </span>
+              </div>
+            </form>
+
+            <button ng-repeat="watch in settings.value.watched"
+                    type="button"
+                    class="btn btn-simple"
+                    style="margin-right: 10px;">
+              {{ watch }}&nbsp;&nbsp;
+              <i class="fa fa-times" ng-click="removeWatch(watch)"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

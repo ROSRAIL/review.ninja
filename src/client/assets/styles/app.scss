@@ -1,0 +1,347 @@
+// overwrite bootstrap styles
+
+// fonts
+$font-family-sans-serif: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+// colours
+$gray-darker: #666;
+$gray-dark: #999;
+$gray: #ccc;
+$gray-light: #ececec;
+$gray-lighter: #f9f9f9;
+
+// brand colours
+$brand-primary: #3e9a94;
+$brand-success: #4c9931;
+$brand-primary-muted: lighten($brand-primary, 20%);
+$brand-primary-hover: darken($brand-primary, 10%);
+$brand-warning: #df843e;
+$brand-danger: #bd2c00;
+$brand-info: #d0eaea;
+$brand-merged: #6e5494;
+$link-color: #3c3c3d;
+
+// typography
+$text-color: $gray-darker;
+$link-color: $gray-darker;
+$link-hover-color: #3c3c3d;
+
+// headings
+$headings-font-weight: 100;
+$headings-color: $gray-darker;
+
+// forms
+$input-border: $gray-light;
+$input-color: $gray-darker;
+$input-color-placeholder: $gray;
+$input-border-focus: $brand-primary;
+
+// panels
+$panel-bg: transparent;
+$panel-default-text: $gray-darker;
+$panel-default-border: $gray-light;
+$panel-default-text: $gray-darker;
+$panel-default-heading-bg: $gray-lighter;
+
+// dropdown
+$dropdown-link-color: $gray-darker;
+$dropdown-link-hover-color: darken($gray-darker, 5%);
+
+// components
+$border-radius-small: 0;
+$border-radius-base: 0;
+$border-radius-large: 0;
+$component-active-bg: $gray-light;
+$component-active-color: #555;
+
+// buttons
+$btn-info-bg: $brand-info;
+$btn-info-color: $brand-primary;
+$btn-default-border: $gray-light;
+$btn-default-color: $brand-primary;
+
+// wells
+$well-bg: $gray-lighter;
+$well-border: transparent;
+
+// list group
+$list-group-link-color: $text-color;
+$list-group-hover-bg: $gray-light;
+$list-group-border: transparent;
+
+// table
+$table-bg: $gray-lighter;
+$table-bg-hover: $gray-light;
+$table-cell-padding: 20px 25px;
+$table-border-color: transparent;
+
+// tabs
+$nav-tabs-active-link-hover-color: $brand-primary;
+$nav-tabs-border-color: $gray-light;
+$nav-tabs-link-hover-border-color: $gray-light;
+$nav-tabs-active-link-hover-border-color: $gray-light;
+$nav-tabs-active-link-hover-bg: $gray-lighter;
+
+// navbar
+$navbar-default-bg: #333;
+$navbar-default-color: $gray;
+$navbar-default-link-color: $gray;
+$navbar-default-link-hover-color: #fff;
+$navbar-default-brand-hover-color: $gray;
+$navbar-default-link-active-color: $gray;
+$navbar-margin-bottom: 0;
+$nav-link-padding: 15px 25px;
+
+// breadcrumb
+$breadcrumb-bg: transparent;
+$breadcrumb-color: $brand-primary;
+$breadcrumb-active-color: $brand-primary;
+$breadcrumb-separator: ' ';
+
+// label
+$label-default-bg: $brand-info;
+$label-color: $brand-primary;
+
+// code
+$pre-color: #333;
+
+// import bootstrap
+@import '../../../bower/bootstrap-sass-official/assets/stylesheets/bootstrap.scss';
+
+// define our own styles
+$code-line-number-color: #aaa;
+$code-line-select-color: #8a6d3b;
+$code-font-size: 12px;
+
+// import our files
+@import 'breadcrumb';
+@import 'browser';
+@import 'btn';
+@import 'code';
+@import 'diff';
+@import 'git';
+@import 'git-merge';
+@import 'icon';
+@import 'list-group';
+@import 'merge';
+@import 'panel';
+@import 'pull-list';
+@import 'settings';
+@import 'table';
+@import 'tabs';
+@import 'trashcan';
+@import 'well';
+
+
+//
+// Heights used in calculations below:
+// 52px: navbar height
+// 48px: issues panel header
+//
+
+.scaffold {
+  background: $gray-lighter;
+  margin-bottom: -40px;
+
+  > .pull {
+    background: $body-bg;
+    min-height: 100vh;
+    min-height: calc(100vh - 52px);
+    padding: 0 30px 40px;
+  }
+
+  > .sidebar {
+    background: $gray-lighter;
+    max-height: 100vh;
+    max-height: calc(100vh - 52px);
+    overflow-x: hidden;
+    overflow-y: hidden;
+    padding: 0;
+
+    .ui-scrollfix {
+      position: fixed;
+      top: 0;
+      width: inherit;
+    }
+
+    .issues {
+      height: 100vh;
+      height: calc(100vh - 100px);
+      overflow-x: hidden;
+      overflow-y: scroll;
+      width: 100%;
+    }
+  }
+}
+
+.star-dropdown {
+  margin-bottom: 0;
+  max-height: 350px;
+  overflow-y: scroll;
+  padding-bottom: 0;
+
+  > li > a:hover {
+    background-color: transparent !important;
+    cursor: default;
+  }
+
+  .divider {
+    margin-bottom: 0;
+  }
+
+  .star-dropdown-item {
+    border-bottom: 1px solid $gray-light;
+    padding: 5px 0;
+  }
+}
+
+.tooltip-inner {
+  max-width: 500px;
+}
+
+
+// typography
+
+body {
+  font-weight: 300;
+}
+
+h2 {
+  margin-top: 30px;
+}
+
+h3,
+h4 {
+  font-weight: 200;
+  margin-top: 10px;
+}
+
+h1,
+h2,
+h3,
+h4,
+.lead {
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.text-body {
+  color: $text-color;
+}
+
+.text-primary.muted {
+  color: $brand-primary-muted;
+}
+
+.text-success {
+  color: $brand-success;
+}
+
+.text-warning {
+  color: $brand-warning;
+}
+
+.text-danger {
+  color: $brand-danger;
+}
+
+.text-info {
+  color: $brand-info;
+}
+
+.text-merged {
+  color: $brand-merged;
+}
+
+.text-gray {
+  color: $gray-dark;
+}
+
+img.muted {
+  opacity: 0.5;
+}
+
+.link-external {
+  color: $brand-primary !important;
+}
+
+a.disabled {
+  color: $gray-dark;
+  cursor: default;
+  pointer-events: none;
+}
+
+// Font Awesome and Octicons
+
+i.fa-times,
+i.fa-plus,
+i.fa-plus-circle,
+i.fa-info,
+.octicon-trashcan {
+  cursor: pointer;
+
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+i.fa-times {
+  color: $gray;
+
+  &:hover {
+    color: $gray-darker;
+  }
+}
+
+.octicon {
+  font-size: 16px;
+}
+
+.octicon-large {
+  font-size: 1.33333333em;
+}
+
+.octicon-rotate {
+  -ms-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+small {
+  vertical-align: middle;
+}
+
+textarea {
+  resize: none;
+}
+
+// Helper classes
+
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.no-select {
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+[ng\:cloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+  display: none !important;
+}

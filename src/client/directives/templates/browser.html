@@ -1,0 +1,37 @@
+<div class="browser panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <strong><a href="" ng-show="stack.length" ng-click="up()"><i class="fa fa-angle-left text-primary"></i></a> &nbsp;{{ path.join('/') }}</strong>
+      </h4>
+    </div>
+    <div class="panel-body">
+
+        <table ng-show="!file" class="browse">
+            <tr class="up" ng-show="stack.length">
+                <td width="1%;"></td>
+                <td><a href="" ng-click="up()">..</a></td>
+            </tr>
+
+            <tr ng-repeat="node in tree.tree | orderBy:['-type', 'path']">
+                <td width="1px" ng-class="{inactivelink: !islink(node)}">
+                    <span ng-show="node.type=='tree'" class="octicon octicon-file-directory"></span>
+                    <span ng-show="node.type=='blob'" class="octicon octicon-file-text"></span>
+                    <span ng-show="node.type=='image'" class="fa fa-picture-o"></span>
+                </td>
+                <td>
+                  <a href="" ng-class="{disabled: node.type==='image'}" ng-click="down(node)">{{ node.path }}</a>
+                </td>
+            </tr>
+        </table>
+
+        <file ng-show="file" 
+              path="path.join('/')" 
+              content="file.content" 
+              head-sha="sha"
+              selection="selection"
+              ref-issues="refIssues"
+              issues="issues">
+        </file>
+
+    </div>
+</div>

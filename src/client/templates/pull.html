@@ -1,0 +1,235 @@
+<div class="row scaffold">
+  <div class="col-sm-9 pull">
+    <div class="row">
+      <div class="col-sm-12">
+        <ol class="breadcrumb">
+          <li><a ui-sref="repo.master()">{{ pull.base.repo.owner.login }} / {{ pull.base.repo.name }}</a></li>
+        </ol>
+
+        <div class="row" style="margin:30px 0;">
+          <div class="col-sm-1" style="padding:0;">
+            <img class="img-responsive" style="margin-bottom: 12px" ng-src="{{ pull.user.avatar_url }}&s=100" />
+          </div>
+          <div class="col-sm-8">
+            <h2 style="margin:0 0 10px;"><span class="mega-octicon octicon-git-pull-request"></span> {{ pull.title }} <a class="link-external" target="_blank"  ng-href="{{pull.html_url}}">#{{ pull.number }}</a></h2>
+            <p>
+              {{ pull.merged ? pull.merged_by.login + ' merged' : pull.user.login + ' wants to merge' }} {{ pull.commits | pluralize:'commit' }}
+              into <span class="label label-default">{{ pull.head.repo.id === pull.base.repo.id ? pull.base.ref : pull.base.label}}</span>
+              from <span class="label label-default">{{ pull.head.repo.id === pull.base.repo.id ? pull.head.ref : pull.head.label }}</span>
+              <small moment="pull.merged_at || pull.created_at"></small>
+            </p>
+            <p ng-bind-html="pull.html"></p>
+          </div>
+          <merge-button permissions="repo.permissions"
+                        pull="pull"
+                        reposettings="reposettings"
+                        status="status.value"
+                        get-long-star-text="getLongStarText()"
+                        ng-show="status.loaded">
+          </merge-button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <tabset>
+          <tab>
+            <tab-heading><span class="octicon octicon-diff"></span> Diffs</tab-heading>
+
+            <div class="well" style="margin-top:-1px; border:1px solid #ececec;">
+              <div class="row">
+                <div class="col-sm-8">
+                  <p>
+                    Showing {{ pull.changed_files | pluralize:'changed file' }} with
+                    <strong>{{ pull.additions | pluralize:'addition' }}</strong> and
+                    <strong>{{ pull.deletions | pluralize:'deletion' }}</strong>
+                  </p>
+
+                  <strong>Compare:</strong>
+
+                  <div class="clearfix"></div>
+                  <graph class="git"
+                         base-sha="pull.base.sha"
+                         issue-sha="sha"
+                         head-sha="head"
+                         active-sha="base"
+                         open-issues="open.value"
+                         compare="compComm(base, head)">
+                  </graph>
+                  <div class="clearfix"></div>
+                </div>
+
+                <div class="col-sm-4 text-right">
+                  <div class="btn-group">
+                      <button type="button"
+                              class="btn btn-default btn-ninja"
+                              ng-click="setStar()"
+                              style="padding:2px 12px 0px;"
+                              tooltip="{{ star.value ? 'Remove' : 'Add' }} ninja star"
+                              tooltip-placement="bottom"
+                              tooltip-append-to-body="true">
+                          <span class="icon-ninja-star text-primary" style="font-size:25px;" ng-class="{muted: !star.value}"></span>
+                      </button>
+                    <div class="btn-group">
+                      <button type="button"
+                              class="btn dropdown-toggle btn-ninja"
+                              ng-class="{'btn-threshold-missing': pull.stars.length < reposettings.value.threshold,
+                                         'btn-threshold-reached': pull.stars.length >= reposettings.value.threshold}"
+                              data-toggle="dropdown"
+                              ng-disabled="!pull.stars.length"
+                              style="font-size:18px;">
+                        {{ pull.stars.length }}
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-right star-dropdown" role="menu">
+                        <li><a href="">{{ getStarText() }}</a></li>
+                        <li class="divider"></li>
+                        <li ng-repeat="star in pull.stars | orderBy:'-created_at'" class="star-dropdown-item">
+                          <a href="#">
+                            <table>
+                              <tr>
+                                <td><img ng-src="{{ star.user.value.avatar_url + '&s=56' }}" width="56px" style="margin-right:16px;" /></td>
+                                <td>
+                                  <strong><a ng-href="{{ star.user.value.html_url }}" target="_blank">{{ star.name }}</a></strong><br />
+                                  ninja starred this<br />
+                                  <small moment="star.created_at"></small>
+                                </td>
+                              </tr>
+                            </table>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <diff ng-repeat="file in files"
+                  file="file"
+                  base-sha="base"
+                  head-sha="head"
+                  selection="reference.selection"
+                  ref-issues="reference.issues"
+                  issues="state==='open' ? open.value : closed.value">
+            </diff>
+
+          </tab>
+
+          <tab>
+            <tab-heading><span class="octicon octicon-file-code"></span> Files</tab-heading>
+            <browser sha="pull.head.sha"
+                     selection="reference.selection"
+                     ref-issues="reference.issues"
+                     issues="state==='open' ? open.value : closed.value">
+            </browser>
+          </tab>
+
+          <tab>
+            <tab-heading><span class="octicon octicon-comment-discussion"></span> Conversation</tab-heading>
+            <div infinite-scroll="comments.getMore()"
+                 infinite-scroll-disabled="comments.loading"
+                 style="margin:20px 0;">
+
+              <table style="width:100%;" ng-show="pull.html">
+                  <tr>
+                      <td style="width:42px; padding-right:10px; vertical-align:top;">
+                          <img ng-src="{{ pull.user.avatar_url }}&s=42" width="42px" />
+                      </td>
+                      <td>
+                          <div class="panel panel-default comment">
+                              <div class="panel-heading">
+                                  <div class="panel-arrow"></div>
+                                  <strong>{{ pull.user.login }}</strong> commented <span moment="pull.created_at"></span>
+                              </div>
+                              <div class="panel-body" ng-bind-html="pull.html"></div>
+                          </div>
+                      </td>
+                  </tr>
+              </table>
+
+              <table style="width:100%;">
+                  <tr ng-repeat="comment in comments.value" ng-show="comment.html">
+                      <td style="width:42px; padding-right:10px; vertical-align:top;">
+                          <img ng-src="{{ comment.user.avatar_url }}&s=42" width="42px" />
+                      </td>
+                      <td>
+                          <div class="panel panel-default comment">
+                              <div class="panel-heading">
+                                  <div class="panel-arrow"></div>
+                                  <strong>{{ comment.user.login }}</strong> commented <span moment="comment.created_at"></span>
+                              </div>
+                              <div class="panel-body" ng-bind-html="comment.html"></div>
+                          </div>
+                      </td>
+                  </tr>
+              </table>
+
+              <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="comments.loading"></i>
+
+              <form role="form" ng-submit="addComment()">
+                <table style="width:100%" ng-show="!comments.loading && !comments.hasMore">
+                    <tr>
+                        <td style="width:42px; padding-right:10px; vertical-align:top;">
+                            <img ng-src="{{ user.value.avatar_url }}&s=42" width="42px" />
+                        </td>
+                        <td>
+                            <div class="panel panel-default comment">
+                                <div class="panel-heading">
+                                  <div class="panel-arrow"></div>
+                                  <strong>{{ user.value.login }}</strong>
+                                </div>
+                                <div class="panel-body" style="padding:0;">
+                                    <textarea class="form-control" ng-model="$parent.comment" rows="4" placeholder="Leave a pull request comment"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="pull-right">
+                              <i class="fa fa-lg fa-spinner fa-spin" ng-show="commenting.loading" style="margin-right:10px;"></i>
+                              <button type="submit" class="btn btn-primary"  ng-disabled="!$parent.comment">Comment</button>
+                            </div>
+                            <div style="clear:both;"></div>
+                        </td>
+                    </tr>
+                </table>
+              </form>
+            </div>
+          </tab>
+
+          <tab>
+            <tab-heading>
+              <span class="octicon octicon-check"></span> Services
+            </tab-heading>
+            <table class="table table-plain">
+              <tr>
+                <th>Context</th>
+                <th>Description</th>
+                <th>Status</th>
+              </tr>
+              <tr ng-repeat="status in status.value.statuses">
+                <td>{{ status.context }}</td>
+                <td><a class="link-external" ng-href="{{ status.target_url }}" target="_blank">{{ status.description }}</a></td>
+                <td ng-class="{'text-success': status.state==='success', 'text-warning': status.state==='pending', 'text-danger': status.state==='failure'}">
+                  <span class="octicon" ng-class="{'octicon-check': status.state==='success', 'octicon-x': status.state!=='success'}"></span>
+                  {{ status.state }}
+                </td>
+              </tr>
+              <tr ng-show="!status.value.statuses.length">
+                <td colspan="3">There are no statuses to show.</td>
+              </tr>
+          </table>
+          </tab>
+
+        </tabset>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-3 hidden-xs sidebar">
+    <div ui-scrollfix="+52">
+      <section ui-view></section>
+    </div>
+  </div>
+</div>

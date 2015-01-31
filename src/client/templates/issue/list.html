@@ -1,0 +1,29 @@
+<table class="table table-hover"
+       infinite-scroll="(state==='open' ? open : closed).getMore()"
+       infinite-scroll-disabled="state==='open' ? open.loading : closed.loading">
+
+  <tr class="select" 
+      ng-repeat="issue in (state==='open' ? open : closed).value | filter:{state: state} | in:reference.issues:'number'"
+      ui-sref="repo.pull.issue.detail({ issue: issue.number })">
+
+    <td style="width:40px; padding-right:0;">
+      <img ng-src="{{ issue.user.avatar_url }}&s=40" width="40px" />
+    </td>
+    <td>
+      <strong>{{ issue.title }}</strong> #{{ issue.number }}<br />
+      <small>
+        <span moment="issue.created_at"></span> &nbsp;
+        <i class="fa fa-lg fa-link text-warning" 
+           ng-show="issue.ref">
+        </i> 
+      </small>
+    </td>
+    <td class="text-center" ng-class="{true: 'text-primary', false: 'text-gray'}[!!issue.body || !!issue.comments]" style="width:50px; padding-left:0;">
+      <i class="octicon octicon-comment"></i>
+      {{ (issue.body ? 1 : 0) + issue.comments }}
+    </td>
+  </tr>
+
+</table>
+
+<i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="state==='open' ? open.loading : closed.loading"></i>

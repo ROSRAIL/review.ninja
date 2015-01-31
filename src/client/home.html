@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>ReviewNinja</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="apple-touch-icon" href="/assets/images/icon-alt-152.png">
+  <link rel="apple-touch-icon-precomposed" href="/assets/images/icon-152.png">
+
+  <!-- COMPONENT STYLESHEETS -->
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/octicons/2.0.2/octicons.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.css" rel="stylesheet">
+
+  <!-- FONTS -->
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,300,400italic,400,600italic,600,700italic,700,800italic,800" rel="stylesheet" type="text/css">
+  <link href="/assets/fonts/ninjaicons.css" rel="stylesheet">
+
+  <!-- APP STYLESHEET -->
+  <link href="/assets/styles/app.css" rel="stylesheet">
+</head>
+
+<body ng-controller="RootCtrl">
+
+<!-- the navbar -->
+  <div class="navbar navbar-default navbar-static-top no-select" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand pull-left" href="/" style="padding:12px 15px; font-size:13px; vertical-align:bottom;">
+          <img src="/assets/images/logo.png">
+        </a>
+        <div class="clearfix"></div>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right buttonstopbar" ng-show="user.loaded" style="font-size:12px;" ng-cloak>
+          <li><a target="_blank" href="http://docs.review.ninja">DOCUMENTATION</a></li>
+          <li><a target="_blank" href="http://www.review.ninja">ABOUT</a></li>
+          <li><p class="navbar-text" style="margin-right: 0px;">{{ user.value.login }}</p></li>
+          <li><a class="action" href="/logout" target="_self"><span class="fa fa-lg fa-sign-out"></span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- the webhook notification -->
+  <div class="container-fluid" ng-cloak>
+    <div class="row" ng-show="hook.loaded && !hook.error && !hook.value">
+      <div class="col-md-12 alert alert-warning" style="margin:0;">
+        <strong>Warning!</strong> A webhook is missing for this repository. 
+        <i class="fa fa-lg fa-spinner fa-spin pull-right" ng-show="creating.loading"></i>
+        <button type="button" class="btn btn-default btn-xs pull-right" ng-click="createWebhook()" ng-show="!creating.loading">Add Webhook</button>
+      </div>
+    </div>
+    <div class="row" ng-show="created">
+      <div class="col-md-12 alert alert-success" style="margin:0;">
+        <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+        </button>
+        <strong>Success!</strong> The webhook was created successfully.
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid" style="margin-bottom:40px;">
+    <div class="row">
+      <div class="col-md-12">
+        <section ui-view></section>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPONENT SCRIPTS -->
+  <script src="//cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
+  <script src="/lib/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-sanitize.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-animate.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-utils/0.1.1/angular-ui-utils.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script>
+  <script src="/lib/ngInfiniteScroll/build/ng-infinite-scroll.min.js"></script>
+
+  <!-- APP -->
+  <script src="/app.js"></script>
+  <script src="/api.js"></script>
+
+  <!-- FILTERS -->
+  <script src="/filters/in.js"></script>
+  <script src="/filters/deep.js"></script>
+  <script src="/filters/pluralize.js"></script>
+
+  <!-- SERVICES -->
+  <script src="/services/Comment.js"></script>
+  <script src="/services/File.js"></script>
+  <script src="/services/Issue.js"></script>
+  <script src="/services/Pull.js"></script>
+  <script src="/services/Reference.js"></script>
+  <script src="/services/socket.js"></script>
+
+  <!-- DIRECTIVES -->
+  <script src="/directives/browser.js"></script>
+  <script src="/directives/diff.js"></script>
+  <script src="/directives/file.js"></script>
+  <script src="/directives/focus.js"></script>
+  <script src="/directives/graph.js"></script>
+  <script src="/directives/merge.js"></script>
+  <script src="/directives/moment.js"></script>
+
+  <!-- MODALS -->
+  <script src="/modals/badge.js"></script>
+
+  <!-- CONTROLLERS -->
+  <script src="/controller/root.js"></script>
+  <script src="/controller/home.js"></script>
+  <script src="/controller/repo.js"></script>
+  <script src="/controller/pull.js"></script>
+  <script src="/controller/settings.js"></script>
+  <script src="/controller/issue/list.js"></script>
+  <script src="/controller/issue/detail.js"></script>
+
+  <!-- INTERCEPTORS -->
+  <script src="/interceptors/401.js"></script>
+
+</body>
+
+</html>

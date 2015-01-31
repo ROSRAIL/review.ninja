@@ -1,0 +1,7 @@
+.DS_Store
+node_modules
+!src/bower
+output
+venv
+report
+npm-debug.log

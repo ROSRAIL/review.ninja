@@ -1,0 +1,23 @@
+<table class="margin">
+  <tr ng-repeat="line in content track by $index">
+      <td class="select">
+        <span class="octicon octicon-issue-opened text-warning" 
+              ng-show="refStarts(line)"
+              ng-click="go(line)">
+        </span>
+        <span class="octicon octicon-issue-opened" 
+            style="color: #dbcc91;"
+              ng-click="clear()" 
+              ng-show="selStarts(line)">
+        </span>
+      </td>
+  </tr>
+</table>
+
+<table class="code">
+  <tr ng-repeat="line in content track by $index"
+      ng-class="{ selected: isSelected(line), referenced: isReferenced(line) }">
+    <td class="number" ng-click="select(line, $event)"><pre>{{ line.base }}</pre></td>
+    <td class="code"><pre>{{ line.content }}</pre></td>
+  </tr>
+</table>

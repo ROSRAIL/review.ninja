@@ -1,0 +1,60 @@
+<accordion class="diff">
+    <accordion-group is-open="$parent.open">
+        <accordion-heading>
+            <strong><i class="fa text-primary" ng-class="{ 'fa-caret-down':open, 'fa-caret-right':!open }"></i> {{ file.filename }}</strong><i ng-show="file.ignored" class="ignored"> - ignored file</i>
+            <button class="btn btn-xs btn-default pull-right" 
+                    ng-disabled="!open"
+                    ng-show="!file.image"
+                    ng-click="expanded=!expanded; $event.stopPropagation();">
+                &nbsp;<i class="fa" ng-class="{ 'fa-plus':!expanded, 'fa-minus':expanded }"></i>&nbsp;
+            </button>
+            <a ng-show="file.ignored"
+                ng-click="$event.stopPropagation()"
+                href="http://docs.review.ninja/quickstart/#ignored"
+                target="_blank" >
+                <span class="fa-stack">
+                    <i class="fa fa-circle fa-lg fa-stack-1x text-info"></i>
+                    <i class="fa fa-info fa-stack-1x text-primary" style="font-size: 12px;"></i>
+                </span>
+            </a>
+        </accordion-heading>
+        <div ng-show="file.status==='renamed' && !file.patch.length" style="padding:5px 10px;">
+            This file was renamed.
+        </div>
+        <div ng-show="file.patch.length">
+            <table class="margin">
+                <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index">
+                    <td class="select">
+                        <span class="octicon octicon-issue-opened text-warning" 
+                              ng-show="refStarts(line)"
+                              ng-click="go(line)">
+                        </span>
+                        <span class="octicon octicon-issue-opened" 
+                              style="color: #dbcc91;"
+                              ng-click="clear()" 
+                              ng-show="selStarts(line)">
+                        </span>
+                    </td>
+                </tr>
+            </table>
+            <table class="code">
+                <tr ng-repeat="line in (expanded ? file.file : file.patch) track by $index" 
+                    ng-class="{ addition: line.add, 
+                                deletion: line.del, 
+                                chunk: line.chunk, 
+                                selected: isSelected(line),
+                                referenced: isReferenced(line) }">
+
+                    <td class="number" ng-click="select(line, $event)"><pre>{{ line.base }}</pre></td>
+                    <td class="number" ng-click="select(line, $event)"><pre>{{ line.head }}</pre></td>
+
+                    <td class="code"><pre>{{ line.content }}</pre></td>
+
+                </tr>
+            </table>
+        </div>
+        <div class="image" ng-show="file.image">
+            <a ng-href="{{ file.image }}" target="_blank"><img class="center-block" ng-src="{{ file.image }}" /></a>
+        </div>
+    </accordion-group>
+</accordion>

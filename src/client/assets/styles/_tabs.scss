@@ -1,0 +1,21 @@
+.nav-tabs {
+  > li > a {
+    color: $brand-primary-muted;
+
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;    
+    user-select: none;
+  }
+
+  > li.active:nth-child(3) > a {
+    background: #fff;
+  }
+
+  a:hover {
+    border-bottom: 0;
+    color: $brand-primary;
+    cursor: pointer;
+  }
+}

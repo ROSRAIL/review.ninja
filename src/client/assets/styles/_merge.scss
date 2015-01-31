@@ -1,0 +1,60 @@
+.merge {
+  border: 1px solid;
+  padding: 15px 20px;
+
+  &.disabled {
+    &.text-success {
+      color: #7c9872;
+    }
+
+    &.text-warning {
+      color: #cea586;
+    }
+
+    &.text-danger {
+      color: #ad7361;
+    }
+  }
+
+  .btn {
+    font-size: 16px;
+    margin-top: 12px;
+  }
+
+  .btn.disabled, 
+  .btn[disabled] {
+    border: 0;
+    opacity: 1;
+
+    &.btn-success {
+      background-color: #a1b998;
+      color: #7c9872;
+    }
+
+    &.btn-warning {
+      background-color: #efc19e;
+      color: #cea586;
+    }
+
+    &.btn-danger {
+      background-color: #cea497;
+      color: #ad7361;
+    }
+  }
+
+  .btn-merged {
+    border: 0;
+    margin-bottom: 5px;
+    margin-top: 0;
+    padding: 0;
+    text-align: left;
+
+    .octicon {
+      font-size: 18px;
+    }
+  }
+
+  p {
+    margin: 1px 0;
+  }
+}

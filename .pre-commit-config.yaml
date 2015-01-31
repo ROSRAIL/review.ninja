@@ -1,0 +1,9 @@
+-   repo: git://github.com/pre-commit/mirrors-eslint
+    sha: '62596a0b5f83171fdf99c575a1b5efd45b3abe5b'
+    hooks:
+    -   id: eslint
+
+-   repo: git://github.com/pre-commit/mirrors-scss-lint
+    sha: 'd7266131da322d6d76a18d6a3659f21025d9ea11'
+    hooks:
+    -   id: scss-lint

@@ -1,0 +1,10 @@
+.pull-list {
+  .watched {
+    padding: 0;
+    width: 5px;
+
+    &.active {
+      background-color: $brand-primary !important;
+    }
+  }
+}

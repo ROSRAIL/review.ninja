@@ -1,0 +1,10 @@
+logo: https://raw.githubusercontent.com/reviewninja/review.ninja/master/src/client/assets/images/review-ninja-500.png
+delay: 5
+branches:
+  - master
+  - release
+stats:
+  - url: http://app.review.ninja/count/user
+    icon: octicon octicon-organization
+  - url: http://app.review.ninja/count/star
+    icon: octicon octicon-star

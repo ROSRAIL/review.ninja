@@ -1,0 +1,13 @@
+language: node_js
+before_script:
+- bower install
+- gem install scss-lint
+after_script:
+- grunt mocha_istanbul && grunt coveralls
+- grunt scsslint --force
+- if [[ $TRAVIS_PULL_REQUEST == 'false' && $TRAVIS_BRANCH == 'master' ]]; then ./.cf.sh review-ninja-staging; fi
+- if [[ $TRAVIS_PULL_REQUEST == 'false' && $TRAVIS_BRANCH == 'release' ]]; then ./.cf.sh review-ninja; fi
+notifications:
+  webhooks: http://api.codepipes.io/exec/5440169d92758e200017513a
+  slack:
+    secure: po0XbKA0WE15LwCFIxh+F/1YB7ysxZbQWQKIkWx0nQevEcZGq6Bvuz6YUa8U0zrBds0GRi7G5k5DGtZtot1/Tq79pve0u5oh/sTUcA9kByrFMRBZ7C/kogLz/n11yU/1mqUGmdH0P0cMyAa0vdN6zVzOpb0W4IwFgVoZeddo9fA=

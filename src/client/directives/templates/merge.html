@@ -1,0 +1,67 @@
+<div class="col-sm-3 merge"
+     ng-class="{
+            'text-success': status.state==='success' && !pull.merged,
+            'text-warning': status.state==='pending' && !pull.merged,
+            'text-danger':  status.state==='failure' && !pull.merged,
+            'text-merged':  pull.merged,
+            'disabled': !pull.mergeable
+          }">
+
+  <div ng-show="pull.merged && branch">
+    <span class="trashcan text-danger octicon octicon-trashcan no-select"
+          ng-class="{confirm: showConfirmation}"
+          ng-click="confirm()"
+          tooltip="Delete branch ({{ pull.head.ref }})"
+          tooltip-placement="bottom"
+          tooltip-append-to-body="true"></span>
+
+    <a href="" class="trashcan-text no-select" ng-class="{confirm: showConfirmation}" ng-click="deleteBranch()">
+      <small style="vertical-align:baseline;">Confirm</small>
+    </a>
+  </div>
+
+  <div ng-show="pull.merged && !branch">
+    <small class="deletion-confirmed">Branch deleted</small>
+  </div>
+
+  <div class="text-body" ng-show="!pull.merged">
+    <p>{{ status.count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>
+    <p ng-show="status.state==='failure'">
+      {{ (pull.milestone.open_issues || 0) | pluralize:'open issue' }}
+    </p>
+    <p ng-show="status.state==='success' || status.state==='pending'">
+      {{ getStarText() }} <a ui-sref="repo.settings()" style="float:right;"><i class="fa fa-pencil-square-o"></i></a>
+    </p>
+    <small ng-show="!pull.mergeable">
+      Pull Request <a ng-href="{{ pull.html_url }}" class="link-external" target="_blank">#{{ pull.number }}</a> can't be merged automatically.
+    </small>
+  </div>
+
+  <button type="button"
+          class="btn btn-block"
+          ng-class="{
+            'btn-success': status.state==='success' && !pull.merged,
+            'btn-warning': status.state==='pending' && !pull.merged,
+            'btn-danger':  status.state==='failure' && !pull.merged,
+            'btn-merged':  pull.merged
+          }"
+          ng-show="permissions.push"
+          ng-disabled="!pull.mergeable"
+          ng-click="merge()">
+
+    <span ng-show="!pull.merged">
+      <span class="octicon octicon-git-merge"></span> {{ status.state==='failure' ? 'Merge with caution!' : 'Merge pull request'}}
+    </span>
+    <span ng-show="pull.merged">
+      <span class="octicon octicon-git-pull-request"></span> Merged
+    </span>
+    <i class="fa fa-spinner fa-spin" ng-show="merging.loading"></i>
+  </button>
+
+  <div class="text-body" ng-show="pull.merged">
+    <p>{{ status.count | pluralize:'service' }} <strong>{{ status.text }}</strong></p>
+    <p>{{ (pull.milestone.closed_issues || 0) | pluralize:'closed issue' }}</p>
+    <p>{{ (pull.milestone.open_issues || 0) | pluralize:'open issue' }}</p>
+    <p>{{ getStarText() }} <a ui-sref="repo.settings()" style="float:right;"><i class="fa fa-pencil-square-o"></i></a></p>
+  </div>
+</div>

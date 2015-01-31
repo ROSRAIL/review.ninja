@@ -1,0 +1,95 @@
+
+<div class="row main" style="margin-top: 50px;">
+
+  <div class="col-md-2 col-md-offset-2">
+    <div ng-show="user.loaded" style="margin-top:30px;">
+      <img ng-src="{{ user.value.avatar_url }}" class="img-responsive hidden-xs hidden-sm" />
+      <img ng-src="{{ user.value.avatar_url + '?s=200' }}" class="visible-xs visible-sm" width="200px;"/>
+      <h4 style="font-weight:400; margin:5px 0;">{{ user.value.name || user.value.login }}</h4>
+      <h4 ng-show="user.value.name">{{ user.value.login }}</h4>
+    </div>
+  </div>
+
+	<div class="col-md-6">
+    <h2>Repositories <i class="fa fa-plus-circle plus-icon" ng-click="show=!show; setFocus=true;"></i></h2>
+
+    <div class="well-dark well-sm" ng-show="show">
+      <form ng-submit="search()" style="margin: 15px;">
+        <div class="input-group">
+          <div class="form-group has-feedback">
+            <input type="text" ng-model="query" focus="setFocus" class="form-control" style="height:33px;" />
+            <i class="fa fa-lg fa-spinner fa-spin form-control-feedback" ng-show="searching.loading" style="top:0px;"></i>
+            <i class="fa fa-lg fa-times form-control-feedback" ng-show="!searching.loading && query" ng-click="reset(); setFocus=true;" style="top:0px;"></i>
+          </div>
+          <span class="input-group-btn">
+            <button class="btn btn-info" type="submit" ng-disabled="!query">Find Repository</button>
+          </span>
+        </div>
+        <span class="help-block" style="margin-top:1px;">
+          Type <em>username</em> or <em>organization</em> to find a repository
+        </span>
+        <div class="list-group" style="max-height:200px; overflow-y:scroll;" ng-show="results.length">
+          <a href="" 
+             class="list-group-item" 
+             ng-class="{ active: active===repo }" 
+             ng-click="$parent.active=repo; add(repo);"
+             ng-repeat="repo in results | orderBy: 'full_name'">
+            {{ repo.owner.login }} / {{ repo.name }}
+            <i class="fa fa-lg fa-spinner fa-spin pull-right" ng-show="active===repo"></i>
+          </a>
+        </div>
+      </form>
+    </div>
+
+    <i class="fa fa-2x fa-spinner fa-spin center-block" ng-show="hasRepos && !repos.length"></i>
+
+    <div ng-show="!hasRepos">
+      <table>
+        <tr>
+          <td>
+            <span class="fa-stack fa-4x">
+              <i class="fa fa-circle fa-stack-2x text-info"></i>
+              <span class="octicon octicon-repo fa-stack-2x text-primary" style="font-size:48px; top:32px;"></span>
+            </span>
+          </td>
+          <td style="vertical-align:top; padding:10px;">
+            <h3 class="text-primary">Add a repository</h3>
+            Choose a repository from your GitHub account or from one of your organizations.
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <span class="fa-stack fa-4x">
+              <i class="fa fa-circle fa-stack-2x text-info"></i>
+              <i class="fa fa-envelope-o fa-stack-1x text-primary" style="font-size:48px;"></i>
+            </span>
+          </td>
+          <td style="vertical-align:top; padding:10px; max-width:325px;">
+            <h3 class="text-primary">Add email notifications</h3>
+            In a repo's settings, choose what you want to be notified about &amp; add branches to watch.
+          </td>
+        </tr>
+      </table>
+    </div>
+
+		<table class="table table-hover">
+			<tr ng-repeat="repo in repos | filter:{ninja: true} | orderBy:['adddate', 'full_name']"
+          ui-sref="repo.master({ user:repo.owner.login, repo:repo.name })"
+          class="select">
+
+				<td><span class="octicon octicon-repo"></span>&nbsp; {{ repo.owner.login }} / {{ repo.name }}</td>
+
+				<td style="text-align:right;">
+          <i class="fa fa-times" 
+             ng-click="remove(repo); $event.stopPropagation();" 
+             tooltip-placement="bottom" 
+             tooltip="Remove">
+          </i>
+        </td>
+
+			</tr>
+		</table>
+	</div>
+
+</div>
