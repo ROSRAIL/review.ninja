@@ -22,7 +22,7 @@
   <link href="/assets/styles/app.css" rel="stylesheet">
 </head>
 
-<body ng-controller="RootCtrl">
+<body ng-controller="RootCtrl" ng-class="{error: $state.current.name === 'error'}">
 
 <!-- the navbar -->
   <div class="navbar navbar-default navbar-static-top no-select" role="navigation">

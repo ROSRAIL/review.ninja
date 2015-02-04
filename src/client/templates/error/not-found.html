@@ -1,0 +1,10 @@
+<div style="margin: 0 -15px;">
+    <img src="/assets/images/review-ninja-404.png" class="img-responsive" />
+</div>
+
+<div class="center-block" ng-show="user.meta['x-oauth-scopes'].split(', ').indexOf('repo') === -1">
+    <p class="lead">Are you looking for a private repository?</p>
+    <a href="/auth/github?private=true" target="_self" type="button" class="btn btn-primary">
+        <span class="octicon octicon-lock"></span> Enable private repositories
+    </a>
+</div>

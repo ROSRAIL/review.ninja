@@ -5,13 +5,32 @@
     <div ng-show="user.loaded" style="margin-top:30px;">
       <img ng-src="{{ user.value.avatar_url }}" class="img-responsive hidden-xs hidden-sm" />
       <img ng-src="{{ user.value.avatar_url + '?s=200' }}" class="visible-xs visible-sm" width="200px;"/>
-      <h4 style="font-weight:400; margin:5px 0;">{{ user.value.name || user.value.login }}</h4>
-      <h4 ng-show="user.value.name">{{ user.value.login }}</h4>
+      <h4 style="font-weight:400; margin-bottom: 5px;">
+        {{ user.value.name || user.value.login }}
+      </h4>
+      <h4 ng-show="user.value.name" style="margin-top:0;">{{ user.value.login }}</h4>
     </div>
   </div>
 
 	<div class="col-md-6">
-    <h2>Repositories <i class="fa fa-plus-circle plus-icon" ng-click="show=!show; setFocus=true;"></i></h2>
+    <h2>
+      Repositories 
+      <i class="fa fa-plus-circle plus-icon" ng-click="show=!show; setFocus=true;"></i>
+      <a href="/auth/github?private=true" target="_self" ng-show="user.meta['x-oauth-scopes'].split(', ').indexOf('repo') === -1">
+        <span class="mega-octicon octicon-lock pull-right" 
+              tooltip="Enable private repositories" 
+              tooltip-append-to-body="true"
+              style="font-size:26px; padding:4px 2px 0;">
+        </span>
+      </a>
+      <a href="/auth/github" target="_self" ng-show="user.meta['x-oauth-scopes'].split(', ').indexOf('repo') > -1">
+        <span class="mega-octicon octicon-lock text-warning pull-right" 
+              tooltip="Disable private repositories" 
+              tooltip-append-to-body="true"
+              style="font-size:26px; padding:4px 2px 0;">
+        </span>
+      </a>
+    </h2>
 
     <div class="well-dark well-sm" ng-show="show">
       <form ng-submit="search()" style="margin: 15px;">
@@ -35,7 +54,8 @@
              ng-click="$parent.active=repo; add(repo);"
              ng-repeat="repo in results | orderBy: 'full_name'">
             {{ repo.owner.login }} / {{ repo.name }}
-            <i class="fa fa-lg fa-spinner fa-spin pull-right" ng-show="active===repo"></i>
+            <span class="octicon octicon-lock text-warning pull-right" ng-show="active!==repo && repo.private" style="padding-top:2px;"></span>
+            <i class="fa fa-lg fa-spinner fa-spin pull-right" ng-show="active===repo" style="padding-top:3px;"></i>
           </a>
         </div>
       </form>
@@ -78,12 +98,15 @@
           ui-sref="repo.master({ user:repo.owner.login, repo:repo.name })"
           class="select">
 
-				<td><span class="octicon octicon-repo"></span>&nbsp; {{ repo.owner.login }} / {{ repo.name }}</td>
+				<td>
+          <span class="octicon octicon-repo" ng-show="!repo.private"></span>
+          <span class="octicon octicon-lock" ng-show="repo.private"></span>
+          &nbsp;{{ repo.owner.login }} / {{ repo.name }}
+        </td>
 
 				<td style="text-align:right;">
           <i class="fa fa-times" 
              ng-click="remove(repo); $event.stopPropagation();" 
-             tooltip-placement="bottom" 
              tooltip="Remove">
           </i>
         </td>

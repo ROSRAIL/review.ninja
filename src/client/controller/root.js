@@ -2,8 +2,8 @@
 // Root Controller
 // *****************************************************
 
-module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '$RPC',
-    function($rootScope, $scope, $stateParams, $HUB, $RPC) {
+module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$state', '$HUB', '$RPC',
+    function($rootScope, $scope, $stateParams, $state, $HUB, $RPC) {
 
         $rootScope.user = $HUB.call('user', 'get', {});
 
@@ -27,6 +27,10 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '
                     }
                 });
             }
+        });
+
+        $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+            $state.go('error');
         });
 
         $scope.createWebhook = function() {
