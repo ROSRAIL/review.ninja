@@ -31,11 +31,15 @@
      tooltip="Commit base"
      tooltip-append-to-body="true"
      tooltip-placement="bottom">
-    <circle ng-class="{ active: activeSha===baseSha }"
-            fill="#ffffff"
+    <circle ng-show="activeSha===baseSha"
+            class="active"
             stroke="#126862"
             stroke-width="3.6"
             stroke-miterlimit="3.6"
+            cx="4" cy="9" r="9" />
+    <circle ng-show="activeSha!==baseSha"
+            class="active"
+            fill="#ffffff"
             cx="4" cy="9" r="9" />
   </g>
 
@@ -46,15 +50,19 @@
      tooltip="When issue was created"
      tooltip-append-to-body="true"
      tooltip-placement="bottom" >
-    <circle ng-class="{ active: activeSha===issueSha }"
-            fill="#ffffff"
+    <circle ng-show="activeSha===issueSha"
+            class="active"
             stroke="#126862"
             stroke-width="3.6"
             stroke-miterlimit="3.6"
             cx="31" cy="37" r="9" />
+    <circle ng-show="activeSha!==issueSha"
+            class="active"
+            fill="#ffffff"
+            cx="31" cy="37" r="9" />
     <g>
-      <rect x="29.5" y="31.5" fill="#3E9A94" width="3" height="7"/>
-      <rect x="29.5" y="39.5" fill="#3E9A94" width="3" height="3"/>
+      <rect x="29.5" y="31.5" fill="#126862" width="3" height="7"/>
+      <rect x="29.5" y="39.5" fill="#126862" width="3" height="3"/>
     </g>
   </g>
 
