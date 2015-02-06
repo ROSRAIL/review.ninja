@@ -2,7 +2,6 @@ var passport = require('passport');
 var express = require('express');
 var path = require('path');
 var github = require('../services/github');
-var papertrail = require('../services/papertrail');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // User controller
