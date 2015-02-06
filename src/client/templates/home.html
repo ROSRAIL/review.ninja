@@ -16,14 +16,14 @@
     <h2>
       Repositories 
       <i class="fa fa-plus-circle plus-icon" ng-click="show=!show; setFocus=true;"></i>
-      <a href="/auth/github?private=true" target="_self" ng-show="user.meta['x-oauth-scopes'].split(', ').indexOf('repo') === -1">
+      <a href="/auth/github?scope=private" target="_self" ng-show="user.meta['x-oauth-scopes'].split(', ').indexOf('repo') === -1">
         <span class="mega-octicon octicon-lock pull-right" 
               tooltip="Enable private repositories" 
               tooltip-append-to-body="true"
               style="font-size:26px; padding:4px 2px 0;">
         </span>
       </a>
-      <a href="/auth/github" target="_self" ng-show="user.meta['x-oauth-scopes'].split(', ').indexOf('repo') > -1">
+      <a href="/auth/github?scope=public" target="_self" ng-show="user.meta['x-oauth-scopes'].split(', ').indexOf('repo') > -1">
         <span class="mega-octicon octicon-lock text-warning pull-right" 
               tooltip="Disable private repositories" 
               tooltip-append-to-body="true"
