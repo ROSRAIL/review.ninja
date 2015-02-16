@@ -40,6 +40,17 @@
           </div>
         </div>
 
+        <form ng-submit="search()" style="margin-bottom: 10px">
+          <div class="input-group">
+            <div class="form-group has-feedback">
+              <input type="text" ng-model="query" focus="setFocus" class="form-control" style="height:33px;" />
+            </div>
+            <span class="input-group-btn">
+              <button class="btn btn-primary" type="submit" ng-disabled="!query">Search</button>
+            </span>
+          </div>
+        </form>
+
         <table class="table table-hover pull-list"
                infinite-scroll="type==='open' ? open.getMore() : closed.getMore()"
                infinite-scroll-disabled="type==='open' ? !(!open.loading && !author) : !(!closed.loading && !author)"

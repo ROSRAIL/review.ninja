@@ -18,11 +18,11 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
 
         // set the default state
         $scope.type = 'open';
+        $scope.query = '';
 
         //
         // Helper functions
         //
-
         var setAuthor = function(pull) {
             var author = pull.user.login;
             $scope.authors[author] = $scope.authors[author] || {};
@@ -85,6 +85,19 @@ module.controller('RepoCtrl', ['$scope', '$stateParams', '$modal', '$HUB', '$RPC
             var modal = $modal.open({
                 templateUrl: '/modals/templates/badge.html',
                 controller: 'BadgeCtrl'
+            });
+        };
+
+        $scope.search = function() {
+            $scope.open = $HUB.wrap('search', 'issues', {
+                q: $scope.query,
+                type: 'pr'
+            }, function(err, res) {
+                if(!err) {
+                    res.affix.items.forEach(function(pull) {
+                        console.log('pull', pull);
+                    });
+                }
             });
         };
 
